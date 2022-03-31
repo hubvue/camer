@@ -1,0 +1,2 @@
+# cam
+command alias management
