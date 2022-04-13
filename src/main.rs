@@ -5,7 +5,6 @@ mod handler;
 fn main() {
     // parse command options
     let options = command::Options::parse();
-    println!("{:?}", options);
 
     // match command
     match options.command {
