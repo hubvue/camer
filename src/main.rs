@@ -12,5 +12,7 @@ fn main() {
         command::Command::Ls(_) => handler::ls(),
         command::Command::Add(ref args) => handler::add(args),
         command::Command::Remove(ref args) => handler::remove(args),
+        command::Command::Init(_) => handler::init(),
+        command::Command::Clean(_) => handler::clean(),
     };
 }

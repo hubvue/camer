@@ -1,5 +1,13 @@
 use crate::command;
 
+pub fn clean() {
+    println!("clean");
+}
+
+pub fn init() {
+    println!("init");
+}
+
 pub fn ls() {
     println!("ls");
 }

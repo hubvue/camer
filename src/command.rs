@@ -9,10 +9,20 @@ pub struct Options {
 
 #[derive(Subcommand, Debug)]
 pub enum Command {
+    Init(Init),
     Ls(Ls),
     Add(Add),
     Remove(Remove),
+    Clean(Clean),
 }
+
+/// Clean configuration file
+#[derive(Args, Debug)]
+pub struct Clean;
+
+/// Initialisation of the configuration file
+#[derive(Args, Debug)]
+pub struct Init;
 
 /// Show all alias set
 #[derive(Args, Debug)]
