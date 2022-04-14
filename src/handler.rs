@@ -1,7 +1,10 @@
 use crate::command;
+use crate::utils;
 
 pub fn clean() {
-    println!("clean");
+    if utils::exist() {
+        println!("clean");
+    }
 }
 
 pub fn init() {
