@@ -1,7 +1,7 @@
 use clap::Parser;
 mod command;
+mod conf;
 mod handler;
-mod utils;
 
 fn main() {
     // parse command options
