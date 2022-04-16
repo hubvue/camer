@@ -16,7 +16,7 @@ pub enum Command {
     Clean(Clean),
 }
 
-/// Clean configuration file
+/// Clean up CAM application files
 #[derive(Args, Debug)]
 pub struct Clean;
 
@@ -37,7 +37,7 @@ pub struct Add {
     pub shell: String,
 }
 
-/// Delete existing alias
+/// Remove existing alias
 #[derive(Args, Debug)]
 pub struct Remove {
     /// Alias name
