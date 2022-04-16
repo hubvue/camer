@@ -55,9 +55,11 @@ pub fn append_camrc(content: String) -> Result<(), Box<dyn Error>> {
     Ok(write_res)
 }
 
-pub fn write_camrc(content: String) -> Result<(), Box<dyn Error>> {
+pub fn remove_camrc(content: &str) -> Result<(), Box<dyn Error>> {
     let camrc_path = get_file_path(CAMRC);
-    let write_res = fs::write(camrc_path, content)?;
+    let file_content = read_camrc()?;
+    let replace_res = file_content.replace(content, "");
+    let write_res = fs::write(camrc_path, replace_res)?;
     Ok(write_res)
 }
 

@@ -20,23 +20,23 @@ pub fn clean() {
 pub fn init() {
     if !conf::exist_camrc() {
         conf::mount_camrc_env().unwrap_or_else(|err| {
-            eprintln!("[CAM Error]: {}", err);
+            eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
         conf::create_camrc().unwrap_or_else(|err| {
-            eprintln!("[CAM Error]: {}", err);
+            eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
-        println!("[CAM Info]: cam initialization succeeded")
+        println!("[CAM INFO]: cam initialization succeeded")
     } else {
-        println!("[CAM Error]: cam has been initialized")
+        println!("[CAM INFO]: cam has been initialized")
     }
 }
 
 pub fn ls() {
     if conf::exist_camrc() {
         let file_content = conf::read_camrc().unwrap_or_else(|err| {
-            eprintln!("[CAM Error]: {}", err);
+            eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
         let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
@@ -50,31 +50,63 @@ pub fn ls() {
         }
         println!("");
     } else {
-        println!("[CAM Error]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
     }
 }
 
 pub fn add(args: &command::Add) {
-    let alias_shell = "alias ".to_owned() + &args.name + "='" + &args.shell + "'";
     if conf::exist_camrc() {
+        if check_name_exist(&args.name) {
+            println!("[CAM INFO]: {} alias already exists", args.name);
+            process::exit(1);
+        }
+        let alias_shell = "alias ".to_owned() + &args.name + "='" + &args.shell + "'";
         conf::append_camrc(alias_shell).unwrap_or_else(|err| {
-            eprintln!("[CAM Error]: {}", err);
+            eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
-        println!("[CAM Info]: {} added successfully", args.name);
+        println!("[CAM INFO]: {} added successfully", args.name);
     } else {
-        println!("[CAM Error]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
     }
 }
 
 pub fn remove(args: &command::Remove) {
     if conf::exist_camrc() {
-        let _file_content = conf::read_camrc().unwrap_or_else(|err| {
-            eprintln!("[CAM Error]: {}", err);
-            process::exit(1);
-        });
-        // TODO:filter
+        if check_name_exist(&args.name) {
+            let file_content = conf::read_camrc().unwrap_or_else(|err| {
+                eprintln!("[CAM ERROR]: {}", err);
+                process::exit(1);
+            });
+            let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
+            let remove_alias = reg
+                .captures_iter(file_content.as_str())
+                .filter(|cap| cap.get(1).unwrap().as_str() == args.name)
+                .map(|cap| cap.get(0).unwrap().as_str())
+                .collect::<Vec<_>>();
+            for alias in remove_alias {
+                conf::remove_camrc(alias).unwrap_or_else(|err| {
+                    eprintln!("[CAM ERROR]: {}", err);
+                    process::exit(1);
+                })
+            }
+            println!("[CAM INFO]: remove {} alias succeeded", args.name);
+        }
     } else {
-        println!("[CAM Error]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
     }
+}
+
+fn check_name_exist(name: &String) -> bool {
+    let file_content = conf::read_camrc().unwrap_or_else(|err| {
+        eprintln!("[CAM ERROR]: {}", err);
+        process::exit(1);
+    });
+    let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
+    let filter_res = reg
+        .captures_iter(file_content.as_str())
+        .map(|cap| cap.get(1).unwrap().as_str())
+        .filter(|&cap_name| cap_name == name)
+        .collect::<Vec<_>>();
+    filter_res.len() > 0
 }

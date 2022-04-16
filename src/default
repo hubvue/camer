@@ -1,0 +1,72 @@
+## === git ===
+
+alias gs='git status'
+
+alias ga='git add'
+alias gaa='git add -A'
+
+alias gd='git diff'
+alias gdc='git diff --cached'
+
+alias gb='git branch'
+alias gba='git branch -a'
+
+alias gc='git commit -m'
+alias gca='git commit -am'
+
+alias gco='git checkout'
+alias gcb='git checkout -b'
+
+alias gcl='git clone'
+
+alias gcp='git cherry-pick'
+
+alias gm='git merge'
+alias gma='git merge --abort'
+
+alias gpl='git pull'
+
+alias gps='git push'
+alias gpsa='git push --all'
+alias gpsu='git push --set-upstream origin'
+
+alias grh='git reset HEAD'
+alias grhh='git reset HEAD --hard'
+
+alias grm='git rm'
+alias grma='git rm --cached'
+
+alias grc='git rebase --continue'
+alias grs='git rebase --skip'
+
+alias gst='git stash'
+alias gsta='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+
+alias gsh='git show'
+alias gshh='git show HEAD'
+alias gss='git show --stat'
+
+alias gsl='git shortlog'
+alias gslc='git shortlog -sn'
+
+alias gt='git tag'
+alias gta='git tag -a'
+alias gtl='git tag -l'
+
+alias gmv='git mv'
+
+## === npm ===
+
+alias ni='npm install'
+alias ya='yarn add'
+alias pa='pnpm add'
+
+alias nr='npm run'
+alias s='npm run start'
+alias t='npm run test'
+alias p='npm run prod'
+alias d='npm run dev'
+alias b='npm run build'
