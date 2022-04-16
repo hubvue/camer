@@ -1,5 +1,6 @@
 use crate::command;
 use crate::conf;
+use regex::Regex;
 use std::process;
 
 pub fn clean() {
@@ -34,10 +35,20 @@ pub fn init() {
 
 pub fn ls() {
     if conf::exist_camrc() {
-        let _file_content = conf::read_camrc().unwrap_or_else(|err| {
+        let file_content = conf::read_camrc().unwrap_or_else(|err| {
             eprintln!("[CAM Error]: {}", err);
             process::exit(1);
         });
+        let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
+        println!("");
+        for caps in reg.captures_iter(file_content.as_str()) {
+            println!(
+                "     {:-<12} {}",
+                caps.get(1).unwrap().as_str().to_owned() + " ",
+                caps.get(2).unwrap().as_str(),
+            )
+        }
+        println!("");
     } else {
         println!("[CAM Error]: cam is not initialized, please run 'cam init'");
     }
