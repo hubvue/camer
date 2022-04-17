@@ -1,10 +1,10 @@
 {
   "name": "camer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
-  "bin" : {
-    "camer" : "./bin/index.js"
+  "bin": {
+    "camer": "./bin/index.js"
   },
   "scripts": {
     "cargo:build": "cargo build --release",
