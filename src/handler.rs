@@ -29,11 +29,11 @@ pub fn init() {
         });
         let env_path = conf::get_env_path().unwrap();
         println!(
-            "[CAM INFO]: cam initialization succeeded, please run `source {}`",
+            "[CAM INFO]: camer initialization succeeded, please run `source {}`",
             env_path
         )
     } else {
-        println!("[CAM INFO]: cam has been initialized")
+        println!("[CAM INFO]: camer has been initialized")
     }
 }
 
@@ -54,7 +54,7 @@ pub fn ls() {
         }
         println!("");
     } else {
-        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: camer is not initialized, please run 'camer init'");
     }
 }
 
@@ -75,7 +75,7 @@ pub fn add(args: &command::Add) {
             args.name, env_path
         );
     } else {
-        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: camer is not initialized, please run 'camer init'");
     }
 }
 
@@ -105,7 +105,7 @@ pub fn remove(args: &command::Remove) {
             );
         }
     } else {
-        println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
+        println!("[CAM INFO]: camer is not initialized, please run 'camer init'");
     }
 }
 

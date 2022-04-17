@@ -1,6 +1,6 @@
 [package]
 name = "camer"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "A nifty command alias manager"
 repository = "https://github.com/hubvue/cam"
