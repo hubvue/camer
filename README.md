@@ -8,7 +8,10 @@ A nifty command alias manager
 ### Install
 
 ```bash
+# cargo
 cargo install camer
+# pnpm
+pnpm add camer -g
 ```
 
 ### Usage
