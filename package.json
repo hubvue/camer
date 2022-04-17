@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/hubvue/camer/issues"
   },
-  "homepage": "https://github.com/hubvue/camer#readme"
+  "homepage": "https://github.com/hubvue/camer#readme",
+  "devDependencies": {
+    "bumpp": "^7.1.1"
+  }
 }
