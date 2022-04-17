@@ -43,7 +43,7 @@ pub fn ls() {
             eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
-        let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ :$#@*><]*)/|\'").unwrap();
+        let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ :$#@*><]*)'").unwrap();
         println!("");
         for caps in reg.captures_iter(file_content.as_str()) {
             println!(
