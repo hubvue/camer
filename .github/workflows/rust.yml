@@ -26,7 +26,7 @@ jobs:
               cp ./target/release/swc .
               chmod +x ./swc
               yarn build
-    name: stable - ${{ matrix.settings.target }} - node@14
+    name: stable - ${{ matrix.settings.target }} - node@16
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v2
@@ -51,8 +51,10 @@ jobs:
           profile: minimal
           override: true
           target: ${{ matrix.settings.target }}
+          
       - name: Install node dependencies
         run: pnpm install
+        
       - name: Build
         run: ${{ matrix.settings.build }}
         shell: bash
