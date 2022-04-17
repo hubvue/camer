@@ -2,6 +2,16 @@
 name = "cam"
 version = "1.0.0"
 edition = "2021"
+description = "A nifty command alias manager"
+repository = "https://github.com/hubvue/cam"
+keywords = [
+	"alias",
+  "command",
+  "cli",
+  "manager"
+]
+license = "MIT"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
