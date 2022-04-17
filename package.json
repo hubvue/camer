@@ -9,6 +9,7 @@
   "scripts": {
     "cargo:build": "cargo build --release",
     "release:npm": "bumpp package.json --commit --push --tag",
+    "release:cargo": "cargo publish",
     "preuninstall": "node ./bin/index.js clean"
   },
   "repository": {
