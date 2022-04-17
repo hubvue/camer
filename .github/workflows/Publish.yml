@@ -58,4 +58,4 @@ jobs:
         run: ${{ matrix.settings.build }}
         shell: bash
       - name: ls
-        run: ls
+        run: ls && ./camer -h
