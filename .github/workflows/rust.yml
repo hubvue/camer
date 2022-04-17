@@ -30,19 +30,29 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
       - name: Setup node x64
         uses: actions/setup-node@v2
         with:
           node-version: 16
           check-latest: true
-          cache: yarn
           architecture: x64
-      - name: Install
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
+          
+      - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           override: true
           target: ${{ matrix.settings.target }}
+      - name: Install node dependencies
+        run: pnpm install
       - name: Build
         run: ${{ matrix.settings.build }}
         shell: bash
