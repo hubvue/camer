@@ -1,0 +1,58 @@
+name: Rust
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+env:
+  MACOSX_DEPLOYMENT_TARGET: "10.13"
+  CARGO_INCREMENTAL: 0
+  CARGO_PROFILE_RELEASE_LTO: "fat"
+  CI: "1"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - host: macos-latest
+            target: x86_64-apple-darwin
+            build: |
+              cargo build -p swc_cli --release --features plugin
+              cp ./target/release/swc .
+              chmod +x ./swc
+              yarn build
+    name: stable - ${{ matrix.settings.target }} - node@14
+    runs-on: ${{ matrix.settings.host }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.15.1
+      - name: Setup node x64
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          check-latest: true
+          architecture: x64
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
+          
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          override: true
+          target: ${{ matrix.settings.target }}
+      - name: Install node dependencies
+        run: pnpm install
+      - name: Build
+        run: ${{ matrix.settings.build }}
+        shell: bash
