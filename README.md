@@ -8,20 +8,20 @@ A nifty command alias manager
 ### Install
 
 ```bash
-cargo install cam
+cargo install camer
 ```
 
 ### Usage
 
 ```bash
-cam -h
+camer -h
 ```
 
 ```bash
-cam 1.0.0
+camer 1.0.0
 
 USAGE:
-    cam <SUBCOMMAND>
+    camer <SUBCOMMAND>
 
 OPTIONS:
     -h, --help       Print help information
