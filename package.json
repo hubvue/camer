@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
+  "bin" : {
+    "camer" : "./bin/index.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cargo:build": "cargo build --release"
+    "cargo:build": "cargo build --release",
+    "release:npm": "bumpp package.json --commit --push --tag"
   },
   "repository": {
     "type": "git",
