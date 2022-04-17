@@ -8,7 +8,8 @@
   },
   "scripts": {
     "cargo:build": "cargo build --release",
-    "release:npm": "bumpp package.json --commit --push --tag"
+    "release:npm": "bumpp package.json --commit --push --tag",
+    "preuninstall": "node ./bin/index.js clean"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,8 @@
     "manager"
   ],
   "files": [
-    "lib"
+    "bin",
+    "bin/camer"
   ],
   "author": "hubvue",
   "license": "MIT",
