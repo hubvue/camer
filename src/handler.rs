@@ -27,7 +27,11 @@ pub fn init() {
             eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
-        println!("[CAM INFO]: cam initialization succeeded")
+        let env_path = conf::get_env_path().unwrap();
+        println!(
+            "[CAM INFO]: cam initialization succeeded, please run `source {}`",
+            env_path
+        )
     } else {
         println!("[CAM INFO]: cam has been initialized")
     }
@@ -65,7 +69,11 @@ pub fn add(args: &command::Add) {
             eprintln!("[CAM ERROR]: {}", err);
             process::exit(1);
         });
-        println!("[CAM INFO]: {} added successfully", args.name);
+        let env_path = conf::get_env_path().unwrap();
+        println!(
+            "[CAM INFO]: {} added successfully, please run `source {}`",
+            args.name, env_path
+        );
     } else {
         println!("[CAM INFO]: cam is not initialized, please run 'cam init'");
     }
@@ -90,7 +98,11 @@ pub fn remove(args: &command::Remove) {
                     process::exit(1);
                 })
             }
-            println!("[CAM INFO]: remove {} alias succeeded", args.name);
+            let env_path = conf::get_env_path().unwrap();
+            println!(
+                "[CAM INFO]: remove {} alias succeeded, please run `source {}`",
+                args.name, env_path
+            );
         }
     } else {
         println!("[CAM INFO]: cam is not initialized, please run 'cam init'");

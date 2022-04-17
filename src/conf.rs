@@ -117,7 +117,7 @@ pub fn remove_camrc(content: &str) -> Result<(), Box<dyn Error>> {
 }
 
 // env
-fn get_env_path() -> Option<String> {
+pub fn get_env_path() -> Option<String> {
     let filenames = [".zshrc", ".bashrc", ".bash_profile"];
     let env_path = filenames
         .iter()
