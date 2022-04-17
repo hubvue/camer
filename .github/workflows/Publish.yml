@@ -1,4 +1,4 @@
-name: Rust
+name: Publish
 
 on:
   push:
@@ -57,3 +57,5 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.build }}
         shell: bash
+      - name: ls
+        run: ls
