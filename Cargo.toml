@@ -1,5 +1,5 @@
 [package]
-name = "cam"
+name = "camer"
 version = "1.0.0"
 edition = "2021"
 description = "A nifty command alias manager"
