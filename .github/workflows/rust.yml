@@ -22,10 +22,9 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: |
-              cargo build -p swc_cli --release --features plugin
-              cp ./target/release/swc .
-              chmod +x ./swc
-              yarn build
+              cargo build --release
+              cp ./target/release/camer .
+              chmod +x ./camer
     name: stable - ${{ matrix.settings.target }} - node@16
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -36,7 +35,7 @@ jobs:
         uses: pnpm/action-setup@v2.0.1
         with:
           version: 6.15.1
-      - name: Setup node x64
+      - name: Setup node 16
         uses: actions/setup-node@v2
         with:
           node-version: 16
