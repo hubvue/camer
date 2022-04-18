@@ -1,4 +1,4 @@
-# cam
+# camer
 
 A nifty command alias manager
 
