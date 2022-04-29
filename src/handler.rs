@@ -47,7 +47,7 @@ pub fn ls() {
         let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([\S ]*)'").unwrap();
 
         let mut alias_table = Table::new();
-        alias_table.set_format(*format::consts::FORMAT_DEFAULT);
+        alias_table.set_format(*format::consts::FORMAT_NO_BORDER);
         alias_table.set_titles(row![
             Frbc -> "Alias",
             Frbc -> "Command"
