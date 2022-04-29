@@ -57,36 +57,103 @@ The `camer ls` command lists all alias set.
 $ camer ls
 ```
 ```bash
-     gs --------- git status
-     ga --------- git add
-     gd --------- git diff
-     gb --------- git branch
-     gco -------- git checkout
-     gcl -------- git clone
-     gm --------- git merge
-     gpl -------- git pull
-     gps -------- git push
-     grh -------- git reset HEAD
-     grm -------- git rm
-     gst -------- git stash
-     gsta ------- git stash apply
-     gstd ------- git stash drop
-     gstl ------- git stash list
-     gstp ------- git stash pop
-     gsh -------- git show
-     gshh ------- git show HEAD
-     gsl -------- git shortlog
-     gt --------- git tag
-     gmv -------- git mv
-     ni --------- npm install
-     ya --------- yarn add
-     pa --------- pnpm add
-     nr --------- npm run
-     s ---------- npm run start
-     t ---------- npm run test
-     p ---------- npm run prod
-     d ---------- npm run dev
-     b ---------- npm run build
+ Alias |            Command
+=======+================================
+  gs   |           git status
+-------+--------------------------------
+  ga   |            git add
+-------+--------------------------------
+  gaa  |           git add -A
+-------+--------------------------------
+  gd   |            git diff
+-------+--------------------------------
+  gdc  |       git diff --cached
+-------+--------------------------------
+  gb   |           git branch
+-------+--------------------------------
+  gba  |         git branch -a
+-------+--------------------------------
+  gc   |         git commit -m
+-------+--------------------------------
+  gca  |         git commit -am
+-------+--------------------------------
+  gco  |          git checkout
+-------+--------------------------------
+  gcb  |        git checkout -b
+-------+--------------------------------
+  gcl  |           git clone
+-------+--------------------------------
+  gcp  |        git cherry-pick
+-------+--------------------------------
+  gm   |           git merge
+-------+--------------------------------
+  gma  |       git merge --abort
+-------+--------------------------------
+  gpl  |            git pull
+-------+--------------------------------
+  gps  |            git push
+-------+--------------------------------
+ gpsa  |         git push --all
+-------+--------------------------------
+ gpsu  | git push --set-upstream origin
+-------+--------------------------------
+  grh  |         git reset HEAD
+-------+--------------------------------
+ grhh  |     git reset HEAD --hard
+-------+--------------------------------
+  grm  |             git rm
+-------+--------------------------------
+ grma  |        git rm --cached
+-------+--------------------------------
+  grc  |     git rebase --continue
+-------+--------------------------------
+  grs  |       git rebase --skip
+-------+--------------------------------
+  gst  |           git stash
+-------+--------------------------------
+ gsta  |        git stash apply
+-------+--------------------------------
+ gstd  |         git stash drop
+-------+--------------------------------
+ gstl  |         git stash list
+-------+--------------------------------
+ gstp  |         git stash pop
+-------+--------------------------------
+  gsh  |            git show
+-------+--------------------------------
+ gshh  |         git show HEAD
+-------+--------------------------------
+  gss  |        git show --stat
+-------+--------------------------------
+  gsl  |          git shortlog
+-------+--------------------------------
+ gslc  |        git shortlog -sn
+-------+--------------------------------
+  gt   |            git tag
+-------+--------------------------------
+  gta  |           git tag -a
+-------+--------------------------------
+  gtl  |           git tag -l
+-------+--------------------------------
+  gmv  |             git mv
+-------+--------------------------------
+  ni   |          npm install
+-------+--------------------------------
+  ya   |            yarn add
+-------+--------------------------------
+  pa   |            pnpm add
+-------+--------------------------------
+  nr   |            npm run
+-------+--------------------------------
+   s   |         npm run start
+-------+--------------------------------
+   t   |          npm run test
+-------+--------------------------------
+   p   |          npm run prod
+-------+--------------------------------
+   d   |          npm run dev
+-------+--------------------------------
+   b   |         npm run build
 ```
 These are the default alias settings.
 
