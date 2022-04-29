@@ -1,5 +1,6 @@
 use crate::command;
 use crate::conf;
+use prettytable::{cell, format, row, Table};
 use regex::Regex;
 use std::process;
 
@@ -44,17 +45,20 @@ pub fn ls() {
             process::exit(1);
         });
         let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([\S ]*)'").unwrap();
-        let alias = reg
-            .captures_iter(file_content.as_str())
-            .map(|caps| {
-                return format!(
-                    "     {:-<12} {}",
-                    caps.get(1).unwrap().as_str().to_owned() + " ",
-                    caps.get(2).unwrap().as_str()
-                );
-            })
-            .fold("".to_string(), |res, item| res + "\n" + &item);
-        println!("{} \n", alias);
+
+        let mut alias_table = Table::new();
+        alias_table.set_format(*format::consts::FORMAT_DEFAULT);
+        alias_table.set_titles(row![
+            Frbc -> "Alias",
+            Frbc -> "Command"
+        ]);
+        for caps in reg.captures_iter(&file_content.as_str()) {
+            alias_table.add_row(row![
+                Fmc -> caps.get(1).unwrap().as_str(),
+                Fmc -> caps.get(2).unwrap().as_str()
+            ]);
+        }
+        alias_table.printstd();
     } else {
         println!("[CAM INFO]: camer is not initialized, please run 'camer init'");
     }
