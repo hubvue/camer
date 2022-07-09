@@ -137,7 +137,7 @@ jobs:
         with:
           version: 6.15.1
       - name: Setup node 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           check-latest: true
