@@ -31,6 +31,6 @@
   },
   "homepage": "https://github.com/hubvue/camer#readme",
   "devDependencies": {
-    "bumpp": "^7.1.1"
+    "bumpp": "7.2.0"
   }
 }
