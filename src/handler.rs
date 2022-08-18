@@ -124,7 +124,6 @@ fn check_name_exist(name: &String) -> bool {
     let filter_res = reg
         .captures_iter(file_content.as_str())
         .map(|cap| cap.get(1).unwrap().as_str())
-        .filter(|&cap_name| cap_name == name)
-        .collect::<Vec<_>>();
-    filter_res.len() > 0
+        .filter(|&cap_name| cap_name == name);
+    filter_res.count() > 0
 }

@@ -123,9 +123,9 @@ pub fn get_env_path() -> Option<String> {
         .iter()
         .map(|&filename| get_file_path(filename))
         .filter(|filepath| exist(filepath.to_string()))
-        .nth(0);
+        .next();
 
-    return env_path;
+    env_path
 }
 
 const CAMRC_ENV_CONTENT: &str = "
@@ -138,8 +138,7 @@ pub fn mount_camrc_env() -> Result<(), Box<dyn Error>> {
         Some(evn_path) => {
             let path = Path::new(evn_path.as_str());
             let env_content = fs::read_to_string(path)?;
-            let write_res = fs::write(path, env_content + CAMRC_ENV_CONTENT)?;
-            write_res
+            fs::write(path, env_content + CAMRC_ENV_CONTENT)?
         }
         None => (),
     };
@@ -152,8 +151,7 @@ pub fn unmount_camrc_env() -> Result<(), Box<dyn Error>> {
             let path = Path::new(evn_path.as_str());
             let env_content = fs::read_to_string(path)?;
             let replace_res = env_content.replace(CAMRC_ENV_CONTENT, "");
-            let write_res = fs::write(path, replace_res)?;
-            write_res
+            fs::write(path, replace_res)?
         }
         None => (),
     };
