@@ -122,8 +122,7 @@ pub fn get_env_path() -> Option<String> {
     let env_path = filenames
         .iter()
         .map(|&filename| get_file_path(filename))
-        .filter(|filepath| exist(filepath.to_string()))
-        .next();
+        .find(|filepath| exist(filepath.to_string()));
 
     env_path
 }
