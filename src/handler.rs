@@ -52,7 +52,7 @@ pub fn ls() {
             Frbc -> "Alias",
             Frbc -> "Command"
         ]);
-        for caps in reg.captures_iter(&file_content.as_str()) {
+        for caps in reg.captures_iter(file_content.as_str()) {
             alias_table.add_row(row![
                 Fmc -> caps.get(1).unwrap().as_str(),
                 Fmc -> caps.get(2).unwrap().as_str()
