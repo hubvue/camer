@@ -2,16 +2,16 @@ name: Publish
 
 on:
   workflow_dispatch:
-    inputs:
-      release_branch:
-        description: "Staging branch to run release from"
+  push:
+    branches:
+      - main
 
 jobs:
   build-rs:
     strategy:
       fail-fast: false
       matrix:
-        settings:
+        include:
           - os: macos-latest
             target: x86_64-apple-darwin
             code-target: darwin-x64
@@ -33,40 +33,40 @@ jobs:
             target: aarch64-pc-windows-msvc
             code-target: win32-arm64
             
-    name: Package ${{ matrix.settings.code-target }}
+    name: Package ${{ matrix.code-target }}
     
-    runs-on: ${{ matrix.settings.os }}
+    runs-on: ${{ matrix.os }}
     
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: "${{ inputs.release_branch }}"
+          fetch-depth: 1
 
       - name: Install
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           override: true
-          target: ${{ matrix.settings.target }}
+          target: ${{ matrix.target }}
       
       - name: Build Setup
-        if: ${{ matrix.settings.setup }}
-        run: ${{ matrix.settings.setup }}
+        if: ${{ matrix.setup }}
+        run: ${{ matrix.setup }}
         
       - name: Build
-        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
+        run: ${{ matrix.rustflags }} cargo build --release -p camer --target ${{ matrix.target }}
       
       - name: Copy CLI binary
-        if: matrix.settings.os == 'windows-latest'
+        if: matrix.os == 'windows-latest'
         run: |
           mkdir dist
-          cp target/${{ matrix.settings.target }}/release/camer.exe ./dist/camer-${{ matrix.settings.code-target }}.exe
+          cp target/${{ matrix.target }}/release/camer.exe ./dist/camer-${{ matrix.code-target }}.exe
       
       - name: Copy CLI binary
-        if: matrix.settings.os != 'windows-latest'
+        if: matrix.os != 'windows-latest'
         run: |
           mkdir dist
-          cp target/${{ matrix.settings.target }}/release/camer ./dist/camer-${{ matrix.settings.code-target }}
+          cp target/${{ matrix.target }}/release/camer ./dist/camer-${{ matrix.code-target }}
       
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
@@ -81,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: "${{ inputs.release_branch }}"
+          fetch-depth: 1
           
       - run: git fetch origin --tags
       
@@ -102,41 +102,10 @@ jobs:
           git config --global user.name 'hubvue'
           git config --global user.email 'cckcc.kim@gmail.com'
       
-      - name: Download Apple ARM64 Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: aarch64-apple-darwin
-          path: cli/dist-darwin-arm64
-      
-      - name: Download Ubuntn ARM64 Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: aarch64-unknown-linux-gnu
-          path: cli/dist-windows-arm64
-          
-      - name: Download Windows ARM64(ships as x86_64) Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: x86_64-pc-windows-gnu
-          path: cli/dist-windows-arm64
-      
-      - name: Download Ubuntu x86_64 Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: x86_64-unknown-linux-gnu
-          path: cli/dist-linux-amd64
-          
-      - name: Download Apple x86_64 Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: x86_64-apple-darwin
-          path: cli/dist-darwin-amd64
-          
-      - name: Download Windows x86_64 Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: x86_64-pc-windows-gnu
-          path: cli/dist-windows-amd64
+          name: camer
           
       - name: Preform Release
         run: ls && tree . && cd cli && ls && tree .
