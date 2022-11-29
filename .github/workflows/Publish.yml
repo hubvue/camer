@@ -51,6 +51,9 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
       
+      - name: Show
+        run: tree .
+      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
