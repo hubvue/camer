@@ -56,3 +56,5 @@ jobs:
       - name: Build in Docker
         if: ${{ matrix.setting.docker }}
         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
+      - name: Show
+        run: tree .
