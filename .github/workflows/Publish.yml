@@ -7,52 +7,73 @@ on:
         description: "Staging branch to run release from"
 
 jobs:
-  build-rs:
-    name: "Build Rust"
-    strategy:
-      fail-fast: false
-      matrix:
-        settings:
-          - host: macos-latest
-            target: "x86_64-apple-darwin"
-            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
-          - host: macos-latest
-            target: "aarch64-apple-darwin"
-            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
-          - host: ubuntu-latest
-            target: "x86_64-unknown-linux-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-          - host: ubuntu-latest
-            target: "aarch64-unknown-linux-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
-            rustflags: 'RUSTFLAGS="-C linker=aarch64-linux-gnu-gcc"'
-            setup: "sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu"
-          - host: windows-latest
-            target: "x86_64-pc-windows-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
-    runs-on: ${{ matrix.settings.host }}
-    setps:
-      - users: actions/checkout@v3
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
         with:
-          ref: "${{ inputs.release_branch }}"
-      
-      - name: Install
-        uses: actions-rs/toolchain@v1
-        if: ${{ !matrix.settings.docker }}
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.2
         with:
-          profile: minimal
-          override: true
-          target: ${{ matrix.settings.target }}
+          version: 6.15.1
+
+      - name: Use Node.js v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: v16
+          registry-url: https://registry.npmjs.org/
+          cache: "pnpm"
       
-      - name: Build Setup
-        if: ${{ matrix.settings.setup }}
-        run: ${{ matrix.settings.setup }}
+      - run: echo "123"
+
+# jobs:
+#   build-rs:
+#     name: "Build Rust"
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         settings:
+#           - host: macos-latest
+#             target: "x86_64-apple-darwin"
+#             lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
+#           - host: macos-latest
+#             target: "aarch64-apple-darwin"
+#             lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
+#           - host: ubuntu-latest
+#             target: "x86_64-unknown-linux-gnu"
+#             lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+#             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
+#           - host: ubuntu-latest
+#             target: "aarch64-unknown-linux-gnu"
+#             lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+#             rustflags: 'RUSTFLAGS="-C linker=aarch64-linux-gnu-gcc"'
+#             setup: "sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu"
+#           - host: windows-latest
+#             target: "x86_64-pc-windows-gnu"
+#             lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+#     runs-on: ${{ matrix.settings.host }}
+#     setps:
+#       - users: actions/checkout@v3
+#         with:
+#           ref: "${{ inputs.release_branch }}"
+      
+#       - name: Install
+#         uses: actions-rs/toolchain@v1
+#         if: ${{ !matrix.settings.docker }}
+#         with:
+#           profile: minimal
+#           override: true
+#           target: ${{ matrix.settings.target }}
+      
+#       - name: Build Setup
+#         if: ${{ matrix.settings.setup }}
+#         run: ${{ matrix.settings.setup }}
         
-      - name: Build
-        if: ${{ !matrix.settings.docker }}
-        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
+#       - name: Build
+#         if: ${{ !matrix.settings.docker }}
+#         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
     
-      - name: Build in Docker
-        if: ${{ matrix.setting.docker }}
-        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
+#       - name: Build in Docker
+#         if: ${{ matrix.setting.docker }}
+#         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
