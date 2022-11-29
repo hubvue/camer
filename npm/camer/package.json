@@ -7,9 +7,7 @@
     "camer": "./bin/index.js"
   },
   "scripts": {
-    "cargo:build": "cargo build --release",
-    "release:npm": "bumpp package.json --commit --push --tag",
-    "release:cargo": "cargo publish"
+    "postinstall": "node scripts/postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +19,9 @@
     "manager"
   ],
   "files": [
-    "bin",
-    "bin/camer"
+    "bin/camer",
+    "scripts/postinstall.js",
+    "README.md"
   ],
   "author": "hubvue",
   "license": "MIT",
@@ -30,6 +29,9 @@
     "url": "https://github.com/hubvue/camer/issues"
   },
   "homepage": "https://github.com/hubvue/camer#readme",
+  "engines": {
+    "node": ">=14.*"
+  },
   "devDependencies": {
     "bumpp": "8.2.1"
   }
