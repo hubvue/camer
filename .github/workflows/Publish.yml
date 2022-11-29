@@ -54,7 +54,11 @@ jobs:
         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
     
       - name: Build in Docker
-        if: ${{ matrix.setting.docker }}
+        if: ${{ matrix.settings.docker }}
         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
-      - name: Show
-        run: echo ${{ matrix.setting.docker }}
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: shim-${{ matrix.settings.target }}
+          path: shim/target/${{ matrix.settings.target }}/release/camer*
