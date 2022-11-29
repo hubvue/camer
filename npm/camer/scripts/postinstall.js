@@ -39,7 +39,7 @@ if (binName) {
     }
   }
 } else {
-  console.log.warn(
+  console.warn(
     "The Camer CLI package doesn't ship with prebuilt binaries for your platform yet." +
     "You can still use the CLI by cloning the hubvue/camer repo from GitHub, " +
     "and follow the instructions there to build the CLI for your platform."

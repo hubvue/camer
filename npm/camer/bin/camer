@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+const { platform, arch } = process;
+
+const PLATFORMS = {
+  win32: {
+    x64: "@cckim/camer-win32-x64/camer.exe",
+    arm64: "@cckim/camer-win32-armx64/camer.exe"
+  },
+  darwin: {
+    x64: "@cckim/camer-darwin-x64/camer",
+    arm64: "@cckim/camer-darwin-arm64/camer"
+  },
+  linux: {
+    x64: "@cckim/camer-linux-x64/camer",
+    arm64: "@cckim/camer-linux-arm64/camer"
+  }
+};
+
+const binPath = PLATFORMS?.[platform]?.[arch];
+
+if (binPath) {
+  const result = require("child_process").spawnSync(
+    require.resolve(binPath),
+    process.argv.slice(2),
+    { shell: false, stdio: "inherit" },
+  );
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  process.exitCode = result.status
+} else {
+  console.error(
+    "The Camer CLI package doesn't ship with prebuilt binaries for your platform yet." +
+    "You can still use the CLI by cloning the hubvue/camer repo from GitHub, " +
+    "and follow the instructions there to build the CLI for your platform."
+  );
+  process.exitCode = 1
+}

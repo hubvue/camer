@@ -4,7 +4,7 @@
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
   "bin": {
-    "camer": "./bin/index.js"
+    "camer": "./bin/camer"
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
