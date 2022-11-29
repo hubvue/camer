@@ -28,8 +28,8 @@ jobs:
             setup: "sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu"
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            code-target: windows-x64
-          - os: win32-latest
+            code-target: win32-x64
+          - os: windows-latest
             target: aarch64-pc-windows-msvc
             code-target: win32-arm64
             
@@ -56,11 +56,23 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
       
+      - name: Copy CLI binary
+        if: matrix.settings.os == 'windows-latest'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.settings.target }}/release/camer.exe ./dist/camer-${{ matrix.settings.code-target }}.exe
+      
+      - name: Copy CLI binary
+        if: matrix.settings.os != 'windows-latest'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.settings.target }}/release/camer ./dist/camer-${{ matrix.settings.code-target }}
+      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.settings.code-target }}
-          path: target/${{ matrix.settings.target }}/release/camer*
+          name: camer
+          path: ./dist/camer-*
           
   final-publish:
     name: "Publish To NPM"
