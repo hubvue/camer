@@ -13,24 +13,31 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - host: macos-latest
-            target: "x86_64-apple-darwin"
-            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
-          - host: macos-latest
-            target: "aarch64-apple-darwin"
-            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
-          - host: ubuntu-latest
-            target: "x86_64-unknown-linux-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
-          - host: ubuntu-latest
-            target: "aarch64-unknown-linux-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            code-target: darwin-x64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            code-target: darwin-arm64
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            code-target: linux-x64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            code-target: linux-arm64
             rustflags: 'RUSTFLAGS="-C linker=aarch64-linux-gnu-gcc"'
             setup: "sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu"
-          - host: windows-latest
-            target: "x86_64-pc-windows-gnu"
-            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
-    runs-on: ${{ matrix.settings.host }}
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            code-target: windows-x64
+          - os: win32-latest
+            target: aarch64-pc-windows-msvc
+            code-target: win32-arm64
+            
+    name: Package ${{ matrix.settings.code-target }}
+    
+    runs-on: ${{ matrix.settings.os }}
+    
     steps:
       - uses: actions/checkout@v3
         with:
@@ -38,7 +45,6 @@ jobs:
 
       - name: Install
         uses: actions-rs/toolchain@v1
-        if: ${{ !matrix.settings.docker }}
         with:
           profile: minimal
           override: true
@@ -54,7 +60,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.settings.target }}
+          name: ${{ matrix.settings.code-target }}
           path: target/${{ matrix.settings.target }}/release/camer*
           
   final-publish:
