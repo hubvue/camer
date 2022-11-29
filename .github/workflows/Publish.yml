@@ -1,162 +1,58 @@
 name: Publish
 
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - v*
-
-env:
-  MACOSX_DEPLOYMENT_TARGET: "10.13"
-  CARGO_INCREMENTAL: 0
-  CARGO_PROFILE_RELEASE_LTO: "fat"
-  CI: "1"
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: "Staging branch to run release from"
 
 jobs:
-  build:
+  build-rs:
+    name: "Build Rust"
     strategy:
       fail-fast: false
       matrix:
         settings:
           - host: macos-latest
-            target: x86_64-apple-darwin
-            build: |
-              cargo build --release
-              cp ./target/release/camer .
-              chmod +x ./camer
-              
-          - host: windows-latest
-            build: |
-              yarn build
-              cargo build --release
-              cp target/release/camer .
-            target: x86_64-pc-windows-msvc
-            
-          - host: windows-latest
-            build: |
-              cargo build --release --target i686-pc-windows-msvc
-              cp target/i686-pc-windows-msvc/release/cmaer .
-            target: i686-pc-windows-msvc
-            
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            build: >-
-              rustup target add x86_64-unknown-linux-gnu &&
-              RUSTFLAGS='-C target-feature=+sse2 -Z new-llvm-pass-manager=no' cargo build --release &&
-              rm -rf target/release/.cargo-lock &&
-              cp target/release/camer . && chmod +x ./camer
-
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-
-            build: >-
-              RUSTFLAGS='-C target-feature=+sse2 -Z new-llvm-pass-manager=no' cargo build --release &&
-              rm -rf target/release/.cargo-lock &&
-              cp target/release/camer . && chmod +x ./camer
-              
+            target: "x86_64-apple-darwin"
+            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
           - host: macos-latest
-            target: aarch64-apple-darwin
-            build: |
-              sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*;
-              export CC=$(xcrun -f clang);
-              export CXX=$(xcrun -f clang++);
-              SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
-              export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
-              cargo build --release --target=aarch64-apple-darwin
-              cp ./target/aarch64-apple-darwin/release/camer .
-              chmod +x ./camer
-
+            target: "aarch64-apple-darwin"
+            lib-cache-key: camer-lib-darwin-${{ inputs.release_branch }}
           - host: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            build: >-
-              set -e &&
-              rustup target add aarch64-unknown-linux-gnu aarch64-unknown-linux-musl &&
-              RUSTFLAGS='-C target-feature=+crt-static -C link-arg=-lgcc -Z new-llvm-pass-manager=no' cargo build --release --target aarch64-unknown-linux-musl &&
-              cp ./target/aarch64-unknown-linux-musl/release/camer . && chmod +x ./camer 
-              
-          - host: ubuntu-18.04
-            target: armv7-unknown-linux-gnueabihf
-            setup: |
-              sudo apt-get update
-              sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf -y
-            build: |
-              cargo build --release --target=armv7-unknown-linux-gnueabihf
-              cp ./target/armv7-unknown-linux-gnueabihf/release/camer .
-              chmod +x ./camer
-
+            target: "x86_64-unknown-linux-gnu"
+            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
           - host: ubuntu-latest
-            target: aarch64-linux-android
-            build: |
-              export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
-              export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
-              export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang++"
-              export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-              cargo build --release --target aarch64-linux-android
-              cp ./target/aarch64-linux-android/release/camer .
-              chmod +x ./camer
- 
-          - host: ubuntu-latest
-            target: armv7-linux-androideabi
-            build: |
-              export CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
-              export CC="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang"
-              export CXX="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi24-clang++"
-              export PATH="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}"
-              cargo build --release --target armv7-linux-androideabi
-              cp ./target/armv7-linux-androideabi/release/camer .
-              chmod +x ./camer
-              
-          - host: ubuntu-latest
-            target: aarch64-unknown-linux-musl
-            downloadTarget: aarch64-unknown-linux-musl
-            build: >-
-              rustup toolchain install $(cat ./rust-toolchain) &&
-              rustup target add aarch64-unknown-linux-musl &&
-              RUSTFLAGS='-C target-feature=+crt-static -C link-arg=-lgcc -Z new-llvm-pass-manager=no' cargo build --release --target aarch64-unknown-linux-musl &&
-              rm -rf target/release/.cargo-lock &&
-              cp target/aarch64-unknown-linux-musl/release/camer . && chmod +x ./camer
-              
+            target: "aarch64-unknown-linux-gnu"
+            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
+            rustflags: 'RUSTFLAGS="-C linker=aarch64-linux-gnu-gcc"'
+            setup: "sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu"
           - host: windows-latest
-            target: aarch64-pc-windows-msvc
-            # Disable `LTO` and increase `codegen-units` to avoid llvm `OOM` on GitHub Actions.
-            build: |
-              export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=256
-              export CARGO_PROFILE_RELEASE_LTO=false
-              cargo build --release --target aarch64-pc-windows-msvc
-              cp target/aarch64-pc-windows-msvc/release/camer.exe .
-
-    name: stable - ${{ matrix.settings.target }} - node@16
+            target: "x86_64-pc-windows-gnu"
+            lib-cache-key: camer-lib-cross-${{ inputs.release_branch }}
     runs-on: ${{ matrix.settings.host }}
-    steps:
-      - uses: actions/checkout@v3
+    setps:
+      - users: actions/checkout@v3
         with:
-          fetch-depth: 0
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 6.15.1
-      - name: Setup node 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          check-latest: true
-          architecture: x64
-          registry-url: https://registry.npmjs.org/
-          cache: "pnpm"
-          
-      - name: Install Rust
+          ref: "${{ inputs.release_branch }}"
+      
+      - name: Install
         uses: actions-rs/toolchain@v1
+        if: ${{ !matrix.settings.docker }}
         with:
           profile: minimal
           override: true
           target: ${{ matrix.settings.target }}
-          
-      - name: Install node dependencies
-        run: pnpm install
+      
+      - name: Build Setup
+        if: ${{ matrix.settings.setup }}
+        run: ${{ matrix.settings.setup }}
         
       - name: Build
-        run: ${{ matrix.settings.build }}
-        shell: bash
-      - name: ls
-        run: ls && ./camer -h
+        if: ${{ !matrix.settings.docker }}
+        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
+    
+      - name: Build in Docker
+        if: ${{ matrix.setting.docker }}
+        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
