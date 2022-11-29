@@ -49,13 +49,13 @@ jobs:
         run: ${{ matrix.settings.setup }}
         
       - name: Build
-        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }} && tree .
+        run: ${{ matrix.settings.rustflags }} cargo build --release -p camer --target ${{ matrix.settings.target }}
       
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.settings.target }}
-          path: target/${{ matrix.settings.target }}/release/camer
+          path: target/${{ matrix.settings.target }}/release/camer*
           
   final-publish:
     name: "Publish To NPM"
