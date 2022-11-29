@@ -33,7 +33,7 @@ jobs:
             target: aarch64-pc-windows-msvc
             code-target: win32-arm64
             
-    name: Package ${{ matrix.code-target }}
+    name: Build ${{ matrix.code-target }}
     
     runs-on: ${{ matrix.os }}
     
@@ -106,9 +106,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: camer
+          path: npm/bin/
           
       - name: Preform Release
-        run: ls && tree . && cd cli && ls && tree .
+        run: ls && tree . 
       
       
       
