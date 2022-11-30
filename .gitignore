@@ -11,3 +11,6 @@
 
 node_modules/
 **/node_modules
+npm/bin
+npm/camer-*
+.DS_Store
