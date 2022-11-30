@@ -107,7 +107,7 @@ jobs:
       - name: Publish npm packages
         run: sh scripts/publish.sh
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
       
       
