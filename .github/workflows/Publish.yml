@@ -112,7 +112,9 @@ jobs:
         run: node npm/camer/scripts/generate-packages.mjs
 
       - name: Publish npm packages
-        run: tree .
+        run: sh scripts/publish.sh
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       
       
