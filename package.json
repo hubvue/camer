@@ -4,7 +4,7 @@
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
   "scripts": {
-    "release": "bumpp package.json npm/camer/package.json"
+    "release": "bumpp package.json npm/camer/package.json --commit --push --tag"
   },
   "repository": {
     "type": "git",
