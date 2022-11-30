@@ -1,6 +1,6 @@
 {
   "name": "camer",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
   "bin": {
