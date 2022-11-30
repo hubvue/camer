@@ -108,8 +108,11 @@ jobs:
           name: camer
           path: npm/bin/
           
-      - name: Preform Release
-        run: ls && tree . 
+      - name: Generate npm package
+        run: node npm/camer/scripts/generate-packages.mjs
+
+      - name: Publish npm packages
+        run: tree .
       
       
       
