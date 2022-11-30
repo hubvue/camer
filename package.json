@@ -3,11 +3,8 @@
   "version": "1.0.8",
   "description": "A nifty command alias manager",
   "main": "./lib/index.js",
-  "bin": {
-    "camer": "./bin/camer"
-  },
   "scripts": {
-    "postinstall": "node scripts/postinstall.js"
+    "release": "bumpp package.json npm/camer/package.json --commit --push --tag"
   },
   "repository": {
     "type": "git",
@@ -18,11 +15,6 @@
     "alias",
     "manager"
   ],
-  "files": [
-    "bin/camer",
-    "scripts/postinstall.js",
-    "README.md"
-  ],
   "author": "hubvue",
   "license": "MIT",
   "bugs": {
@@ -31,5 +23,8 @@
   "homepage": "https://github.com/hubvue/camer#readme",
   "engines": {
     "node": ">=14.*"
+  },
+  "devDependencies": {
+    "bumpp": "8.2.1"
   }
 }

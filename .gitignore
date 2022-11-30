@@ -10,3 +10,4 @@
 **/*.rs.bk
 
 node_modules/
+**/node_modules
