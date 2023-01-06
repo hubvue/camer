@@ -1,3 +1,4 @@
+//! Types representing all Camer commands.
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Parser, Debug)]
