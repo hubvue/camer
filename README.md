@@ -83,7 +83,7 @@ $ camer ls
 -------+--------------------------------
    b   |         npm run build
 ```
-These are the default alias settings.
+Above are some of the default aliases that crammer creates for you.
 
 #### Add
 The `camer add` command adds a new alias. The alias name and the command to be executed are required.
