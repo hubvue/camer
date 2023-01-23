@@ -92,7 +92,7 @@ pub fn remove(args: &command::Remove) {
                 eprintln!("[CAM ERROR]: {}", err);
                 process::exit(1);
             });
-            let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
+            let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([\S ]*)'").unwrap();
             let remove_alias = reg
                 .captures_iter(file_content.as_str())
                 .filter(|cap| cap.get(1).unwrap().as_str() == args.name)
@@ -109,6 +109,11 @@ pub fn remove(args: &command::Remove) {
                 "[CAM INFO]: remove {} alias succeeded, please run `source {}`",
                 args.name, env_path
             );
+        } else {
+            println!(
+                "[CAM INFO]: Could not find a valid alias named `{}` in .camrc.",
+                args.name
+            )
         }
     } else {
         println!("[CAM INFO]: camer is not initialized, please run 'camer init'");
@@ -120,7 +125,7 @@ fn check_name_exist(name: &String) -> bool {
         eprintln!("[CAM ERROR]: {}", err);
         process::exit(1);
     });
-    let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([0-9a-zA-Z_ ]*)'").unwrap();
+    let reg = Regex::new(r"alias ([0-9a-zA-Z_]*)='([\S ]*)'").unwrap();
     let filter_res = reg
         .captures_iter(file_content.as_str())
         .map(|cap| cap.get(1).unwrap().as_str())
