@@ -2,8 +2,6 @@
 
 A nifty command alias manager
 
-> Note: NPM only supports Mac platform, while cargo supports Mac platform and Linux platform.
-
 ## Quick Start
 
 
