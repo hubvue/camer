@@ -69,7 +69,7 @@ jobs:
           cp target/${{ matrix.target }}/release/camer ./dist/camer-${{ matrix.code-target }}
       
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: camer
           path: ./dist/camer-*
