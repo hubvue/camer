@@ -18,5 +18,5 @@ readme = "README.md"
 [dependencies]
 clap = { version = "4.1.6", features = ["derive"] }
 dirs = "4.0"
-regex = "1.7.1"
+regex = "1.10.4"
 prettytable-rs = "0.10.0"
