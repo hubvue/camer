@@ -86,7 +86,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
         with:
-          version: 6.15.1
+          version: 6.35.1
           
       - name: Use Node v16
         uses: actions/setup-node@v3
